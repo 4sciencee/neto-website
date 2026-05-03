@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Neto's Market & Bakery — Homepage</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=Caveat:wght@400;600;700&family=DM+Serif+Display:ital@0;1&family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #2a1f17; font-family: "Inter", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    button { font-family: inherit; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="papel-picado.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="variant-a.jsx"></script>
+  <script type="text/babel" src="variant-b.jsx"></script>
+  <script type="text/babel" src="variant-c.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    const DC_Canvas = window.DesignCanvas;
+    const DC_Section = window.DCSection;
+    const DC_Artboard = window.DCArtboard;
+    const VA = window.VariantA;
+    const VB = window.VariantB;
+    const VC = window.VariantC;
+    const useTweaksFn = window.useTweaks;
+    const TPanel = window.TweaksPanel;
+    const TSection = window.TweakSection;
+    const TToggle = window.TweakToggle;
+    const TColor = window.TweakColor;
+    const TSliderC = window.TweakSlider;
+    const TRadioC = window.TweakRadio;
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "showPapelPicado": true,
+      "papelColor": "#B8362B",
+      "accentColor": "#B8362B",
+      "bannerHeight": 56,
+      "bannerCount": 18
+    }/*EDITMODE-END*/;
+
+    const ART_W = 1440;
+    const ART_H = 4400;
+
+    const App = () => {
+      const [t, setTweak] = useTweaksFn(TWEAK_DEFAULTS);
+
+      const PRESETS = {
+        red:    { papelColor: "#B8362B", accentColor: "#B8362B" },
+        gold:   { papelColor: "#E5A82E", accentColor: "#B8362B" },
+        blue:   { papelColor: "#1F4A8A", accentColor: "#B8362B" },
+        rainbow:{ papelColor: "#B8362B", accentColor: "#B8362B" },
+      };
+
+      return (
+        <>
+          <DC_Canvas>
+            <DC_Section
+              id="homepage"
+              title="Neto's Market & Bakery — Homepage"
+              subtitle="Three directions · same content, different personalities. Toggle the Tweaks panel to customize Direction A."
+            >
+              <DC_Artboard id="a" label="A · Mercado — editorial & warm" width={ART_W} height={ART_H}>
+                <VA
+                  showPapelPicado={t.showPapelPicado}
+                  papelColor={t.papelColor}
+                  accentColor={t.accentColor}
+                  bannerHeight={t.bannerHeight}
+                  bannerCount={t.bannerCount}
+                />
+              </DC_Artboard>
+              <DC_Artboard id="b" label="B · Cantina — bold & lively" width={ART_W} height={ART_H}>
+                <VB />
+              </DC_Artboard>
+              <DC_Artboard id="c" label="C · Panadería — soft & gallery" width={ART_W} height={ART_H}>
+                <VC />
+              </DC_Artboard>
+            </DC_Section>
+          </DC_Canvas>
+
+          <TPanel title="Tweaks · Direction A">
+            <TSection label="Papel picado banner" />
+            <TToggle  label="Show banner"
+                      value={t.showPapelPicado}
+                      onChange={(v) => setTweak('showPapelPicado', v)} />
+            <TColor   label="Flag color"
+                      value={t.papelColor}
+                      onChange={(v) => setTweak('papelColor', v)} />
+            <TSliderC label="Banner height" min={32} max={96} step={2} unit="px"
+                      value={t.bannerHeight}
+                      onChange={(v) => setTweak('bannerHeight', v)} />
+            <TSliderC label="Flag count" min={8} max={28} step={1}
+                      value={t.bannerCount}
+                      onChange={(v) => setTweak('bannerCount', v)} />
+
+            <TSection label="Theme accent" />
+            <TColor   label="Accent color"
+                      value={t.accentColor}
+                      onChange={(v) => setTweak('accentColor', v)} />
+            <TRadioC  label="Quick theme"
+                      value={t.papelColor === "#B8362B" ? "red" : t.papelColor === "#E5A82E" ? "gold" : t.papelColor === "#1F4A8A" ? "blue" : "custom"}
+                      options={["red", "gold", "blue"]}
+                      onChange={(v) => setTweak({ papelColor: PRESETS[v].papelColor, accentColor: PRESETS[v].accentColor })} />
+          </TPanel>
+        </>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
